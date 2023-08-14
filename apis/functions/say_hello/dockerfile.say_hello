@@ -1,0 +1,15 @@
+FROM 284932821432.dkr.ecr.us-east-1.amazonaws.com/racoon-images-repository-dev:base
+
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+COPY ./handler.py ./
+
+COPY requirements.txt ./
+
+RUN python -m venv .venv
+
+RUN source .venv/bin/activate
+
+RUN python -m pip install -r requirements.txt --upgrade pip
+
+CMD [ "handler.handler" ]

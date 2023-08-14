@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  image_uploader:
+    build: 
+      context: .
+      dockerfile: dockerfile.say_hello
+    container_name: racoon-apis-say_hello-container
+    image: 'racoon-apis-say-hello:latest'
+    restart: always
+    ports:
+      - "9000:8080"
+      - "5678:5678"      

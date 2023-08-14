@@ -1,0 +1,30 @@
+# name: Build and Push Docker Images
+
+# on:
+#   push:
+#     paths:
+#       - 'apis/functions/**'
+#       - 'apis/common/**'
+#   pull_request:
+#     paths:
+#       - 'apis/functions/**'
+#       - 'apis/common/**'
+
+# env:
+#   IMAGE_TAG: ${{ github.run_number }}-backend-dev
+#   ENVIRONMENT: development
+#   REPOSITORY: fintalk-ai-llego-dev
+#   STAGE: dev
+#   AWS_DEFAULT_REGION: us-east-1
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: GitHub checkout
+#         uses: actions/checkout@v3
+#         with:
+#           ref: develop
+#       - name: Login to Amazon ECR
+#         id: login-ecr
+#         uses: aws-actions/amazon-ecr-login@v1
