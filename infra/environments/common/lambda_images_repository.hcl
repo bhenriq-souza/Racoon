@@ -7,5 +7,5 @@ locals {
 }
 
 inputs = {
-  name = "racoon-images-repository-${local.env_vars.env}"
+  name = "${local.env_vars.project}-images-repository-${local.env_vars.env}"
 }

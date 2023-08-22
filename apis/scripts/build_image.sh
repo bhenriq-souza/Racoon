@@ -17,16 +17,16 @@ aws ecr get-login-password --region $AWS_REGION --profile $AWS_PROFILE | docker 
 if [ "$IMAGE" == "base" ]; then
     echo "Building base image..."
 
-    docker build -t $ECR_REPOSITORY_NAME:raccon_apis_base -f ./base.dockerfile .
+    docker build -t $ECR_REPOSITORY_NAME:racoon_apis_base -f ./base.dockerfile .
 
     echo "Finished building base image."
 
     if [ $SHOULD_UPLOAD == "true" ]; then
       echo "Uploading base image..."
       
-      docker tag $ECR_REPOSITORY_NAME:raccon_apis_base $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:raccon_apis_base
+      docker tag $ECR_REPOSITORY_NAME:racoon_apis_base $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:racoon_apis_base
 
-      docker push $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:raccon_apis_base
+      docker push $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:racoon_apis_base
 
       echo "Finished uploading base image."
     fi
@@ -37,14 +37,14 @@ else
 
     cd functions/$IMAGE
 
-    docker build -t $ECR_REPOSITORY_NAME:raccon_$IMAGE -f ./dockerfile.$IMAGE .
+    docker build -t $ECR_REPOSITORY_NAME:racoon_$IMAGE -f ./dockerfile.$IMAGE .
 
     if [ $SHOULD_UPLOAD == 'true' ]; then
         echo "Uploading $IMAGE API image..."
 
-        IMAGE_URI=$ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:'raccon_'$IMAGE
+        IMAGE_URI=$ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:'racoon_'$IMAGE
 
-        docker tag $ECR_REPOSITORY_NAME:raccon_$IMAGE $IMAGE_URI
+        docker tag $ECR_REPOSITORY_NAME:racoon_$IMAGE $IMAGE_URI
 
         docker push $IMAGE_URI
         
