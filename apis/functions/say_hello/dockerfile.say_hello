@@ -1,4 +1,4 @@
-FROM 284932821432.dkr.ecr.us-east-1.amazonaws.com/racoon-images-repository-dev:base
+FROM 284932821432.dkr.ecr.us-east-1.amazonaws.com/racoon-images-repository-dev:raccon_apis_base
 
 WORKDIR ${LAMBDA_TASK_ROOT}
 

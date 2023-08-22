@@ -4,7 +4,7 @@ ENV=$1
 IMAGE=$2
 SHOULD_UPLOAD=$3
 
-ECR_REPOSITORY_NAME=racoon-images-repository-dev
+ECR_REPOSITORY_NAME=racoon-images-repository-$ENV
 
 cd apis
 
@@ -17,32 +17,44 @@ aws ecr get-login-password --region $AWS_REGION --profile $AWS_PROFILE | docker 
 if [ "$IMAGE" == "base" ]; then
     echo "Building base image..."
 
-    docker build -t $ECR_REPOSITORY_NAME:base -f ./base.dockerfile .
+    docker build -t $ECR_REPOSITORY_NAME:raccon_apis_base -f ./base.dockerfile .
 
     echo "Finished building base image."
 
     if [ $SHOULD_UPLOAD == "true" ]; then
       echo "Uploading base image..."
       
-      docker tag $ECR_REPOSITORY_NAME:base $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:base
+      docker tag $ECR_REPOSITORY_NAME:raccon_apis_base $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:raccon_apis_base
 
-      docker push $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:base
+      docker push $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:raccon_apis_base
 
       echo "Finished uploading base image."
-    fi   
+    fi
 else 
     echo "Building $IMAGE API image..."
 
+    FUNCTION_NAME="racoon_"$IMAGE"_function"
+
     cd functions/$IMAGE
 
-    docker build -t $ECR_REPOSITORY_NAME:$IMAGE -f ./dockerfile.$IMAGE .
+    docker build -t $ECR_REPOSITORY_NAME:raccon_$IMAGE -f ./dockerfile.$IMAGE .
 
     if [ $SHOULD_UPLOAD == 'true' ]; then
         echo "Uploading $IMAGE API image..."
 
-        docker tag $ECR_REPOSITORY_NAME:$IMAGE $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:$IMAGE
+        IMAGE_URI=$ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:'raccon_'$IMAGE
 
-        docker push $ECR_REPOSITORY_URI/$ECR_REPOSITORY_NAME:$IMAGE
+        docker tag $ECR_REPOSITORY_NAME:raccon_$IMAGE $IMAGE_URI
+
+        docker push $IMAGE_URI
+        
+        echo "Updating API image for $FUNCTION_NAME function using $IMAGE_URI and $AWS_REGION region"
+
+        aws lambda update-function-code \
+          --function-name $FUNCTION_NAME \
+          --image-uri $IMAGE_URI \
+          --region $AWS_REGION \
+          --profile personal
 
         echo "Finished uploading $IMAGE API image."
     fi

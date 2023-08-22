@@ -10,6 +10,10 @@ resource "aws_lambda_function" "lambda" {
   tracing_config {
     mode = "PassThrough"
   }
+
+  environment {
+    variables = var.environment_variables
+  }
 }
 
 resource "aws_api_gateway_rest_api" "api" {
@@ -58,5 +62,15 @@ resource "aws_lambda_permission" "apigw" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.api[0].id}/*/${aws_api_gateway_method.method[0].http_method}${aws_api_gateway_resource.resource[0].path}"
+  source_arn    = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.api[0].id}/*/${aws_api_gateway_method.proxy[0].http_method}${aws_api_gateway_resource.resource[0].path}"
+}
+
+resource "aws_api_gateway_deployment" "deployment" {
+  rest_api_id = aws_api_gateway_rest_api.api[0].id
+  stage_name  = var.environment
+
+  depends_on = [
+    aws_api_gateway_method.proxy,
+    aws_api_gateway_integration.lambda
+  ]
 }

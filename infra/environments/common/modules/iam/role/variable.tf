@@ -26,6 +26,16 @@ variable "permissions_boundary" {
   default     = null
 }
 
+variable "policy" {
+  description = "The IAM policy to be attached to the role."
+  type        = string
+}
+
+variable "policy_name" {
+  description = "The name of the IAM policy to be created."
+  type        = string
+}
+
 variable "policies_arns" {
   description = "List of ARNs of IAM policies to attach to the role."
   type        = list(string)

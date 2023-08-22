@@ -60,3 +60,14 @@ variable "account_id" {
   description = "The AWS account ID"
   type        = string
 }
+
+variable "environment" {
+  description = "The environment (e.g., dev, prod)"
+  type        = string
+}
+
+variable "environment_variables" {
+  description = "Environment variables for the Lambda function"
+  type        = map(string)
+  default     = {}
+}
