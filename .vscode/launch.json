@@ -13,5 +13,14 @@
       "envFile": "${workspaceFolder}/apis/functions/say_hello/env_vars/.env.local",
       "env": { "PYTHONPATH": "${workspaceRoot}/apis" }
     },
+    {
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "name": "Racoon - Sign up Handler",
+      "program": "${workspaceFolder}/apis/functions/sign_up/handler.py",
+      "envFile": "${workspaceFolder}/apis/functions/sign_up/env_vars/.env.local",
+      "env": { "PYTHONPATH": "${workspaceRoot}/apis" }
+    },
   ]
 }

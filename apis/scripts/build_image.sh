@@ -37,7 +37,7 @@ else
 
     cd functions/$IMAGE
 
-    docker build -t $ECR_REPOSITORY_NAME:racoon_$IMAGE -f ./dockerfile.$IMAGE .
+    docker build --no-cache -t $ECR_REPOSITORY_NAME:racoon_$IMAGE -f ./dockerfile.$IMAGE .
 
     if [ $SHOULD_UPLOAD == 'true' ]; then
         echo "Uploading $IMAGE API image..."

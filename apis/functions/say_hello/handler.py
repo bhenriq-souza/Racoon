@@ -1,10 +1,10 @@
+from json import loads
 from aws_lambda_powertools import Logger
 from aws_lambda_powertools.utilities.typing import LambdaContext
-from json import loads
 
 from common.utils.bases import BaseLambda
 from common.utils.logger import LoggerFactory
-from common.utils.errors import CustomKeyErrorError, ErrorsCode
+from common.utils.errors import CustomKeyErrorError, ErrorCodes
 
 class SayHelloHandler(BaseLambda):
     def __init__(self, logger: Logger):
@@ -37,10 +37,10 @@ class SayHelloHandler(BaseLambda):
             return resp
         except (CustomKeyErrorError, AttributeError, UnboundLocalError) as e:
             if isinstance(e, AttributeError) or isinstance(e, Exception):
-                self.logger.error(f'Error: {ErrorsCode.INTERNAL_SERVER_ERROR.value} {e.args[0]}')
+                self.logger.error(f'Error: {ErrorCodes.INTERNAL_SERVER_ERROR.value} {e.args[0]}')
 
                 return {
-                    'statusCode': ErrorsCode.INTERNAL_SERVER_ERROR.value,
+                    'statusCode': ErrorCodes.INTERNAL_SERVER_ERROR.value,
                     'body': f'Error: {e.args[0]}'
                 }
 

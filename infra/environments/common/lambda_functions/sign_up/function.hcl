@@ -31,5 +31,7 @@ inputs = {
     "POWERTOOLS_SERVICE_NAME": "${local.env_vars.project}_sign_up",
     "LOG_LEVEL": local.env_vars.env == "prod" ? "INFO" : "DEBUG",
     "USERS_TABLE": "${local.env_vars.project}-users-${local.env_vars.env}"
+    "KMS_USERS_KEY_ALIAS": dependency.kms_key.outputs.kms_key_alias,
+    "AWS_REGION_NAME": local.region_vars.aws_region
   }
 }
